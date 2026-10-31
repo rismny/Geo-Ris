@@ -1,0 +1,10 @@
+{
+  "name": "Ris YSR GEO",
+  "description": "Aplikasi pengukuran peta dan digitasi polygon profesional. Impor \u0026 ekspor file KML/KMZ/GeoJSON, ukur panjang sisi, sudut, keliling, dan luas bidang tanah secara akurat.",
+  "requestFramePermissions": [
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

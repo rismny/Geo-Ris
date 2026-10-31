@@ -1,0 +1,663 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+  
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Custom Leaflet Map styling */
+.leaflet-container {
+  width: 100%;
+  height: 100%;
+  background: #090d16 !important;
+  font-family: inherit;
+  outline: none;
+}
+
+/* Crisp Satellite Tile Upscaling up to Zoom 22 */
+.leaflet-tile {
+  image-rendering: -webkit-optimize-contrast;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+.leaflet-tile-container {
+  will-change: transform;
+}
+
+/* Smooth right-click panning cursor */
+.panning-active {
+  cursor: grabbing !important;
+}
+
+
+/* Custom Midpoint Distance Label */
+.distance-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  pointer-events: none;
+}
+
+.distance-badge {
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+  display: inline-flex;
+  align-items: center;
+  transform: translate(-50%, -50%);
+}
+
+/* Custom Vertex Angle Label (as seen in screenshot with yellow text) */
+.angle-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  pointer-events: none;
+}
+
+.angle-badge {
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  color: #facc15; /* Yellow text */
+  border: 1px solid rgba(250, 204, 21, 0.4);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  display: inline-flex;
+  align-items: center;
+  transform: translate(-50%, -50%);
+}
+
+.angle-badge.acute {
+  background: rgba(220, 38, 38, 0.9);
+  color: #ffffff;
+  border-color: #ef4444;
+  animation: pulse 1.5s infinite;
+}
+
+/* Enhanced Draggable Surveyor Patok Pin Marker */
+.patok-marker-wrapper {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.patok-pin-target {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab !important;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+.patok-pin-target:hover {
+  cursor: grab !important;
+}
+
+.patok-pin-target:active,
+.patok-pin-target.is-dragging {
+  cursor: grabbing !important;
+}
+
+/* Clickable polygon edge for adding vertices with mouse */
+.polygon-edge-hit-area {
+  cursor: copy !important;
+  pointer-events: stroke !important;
+  transition: stroke 0.15s ease, stroke-width 0.15s ease, stroke-opacity 0.15s ease;
+}
+
+.polygon-edge-hit-area:hover {
+  stroke: #38bdf8 !important;
+  stroke-width: 8px !important;
+  stroke-opacity: 0.9 !important;
+  stroke-dasharray: 6, 6;
+  filter: drop-shadow(0 0 6px #38bdf8);
+}
+
+.patok-pin-ring {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #ef4444;
+  border: 2px solid #ffffff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.65), 0 0 0 1.5px rgba(239, 68, 68, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.12s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.12s ease;
+  pointer-events: auto;
+}
+
+.patok-pin-ring.p1 {
+  background: #10b981;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.65), 0 0 0 1.5px rgba(16, 185, 129, 0.5);
+}
+
+.patok-pin-ring.is-selected {
+  background: #0284c7;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.6), 0 4px 12px rgba(0, 0, 0, 0.8);
+  transform: scale(1.25);
+}
+
+.patok-pin-target:hover .patok-pin-ring {
+  transform: scale(1.22);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.85), 0 0 0 2.5px #ffffff;
+}
+
+.patok-pin-target:hover .patok-pin-ring.p1 {
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.85), 0 0 0 2.5px #ffffff;
+}
+
+.patok-pin-target:hover .patok-pin-ring.is-selected {
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.9), 0 0 0 2.5px #ffffff;
+}
+
+.patok-pin-target:active .patok-pin-ring,
+.patok-pin-target.is-dragging .patok-pin-ring {
+  transform: scale(1.32);
+  box-shadow: 0 0 18px rgba(250, 204, 21, 0.95), 0 0 0 3px #facc15;
+  background: #d97706 !important;
+}
+
+.patok-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+/* Custom Center Field Badge displaying Panjang, Lebar, and Luas */
+.field-center-label {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.field-info-badge {
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(6px);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-left-width: 4px;
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  white-space: nowrap;
+  pointer-events: auto;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field-info-badge:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.8);
+}
+
+.field-info-badge.selected {
+  border-color: rgba(6, 182, 212, 0.8);
+  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.4), 0 6px 16px rgba(0, 0, 0, 0.7);
+}
+
+.field-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: #f8fafc;
+  line-height: 1.2;
+}
+
+.field-dimensions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: #94a3b8;
+  margin-top: 1px;
+}
+
+.dim-k {
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.dim-sep {
+  color: #475569;
+}
+
+.field-area {
+  font-size: 11px;
+  font-weight: 800;
+  color: #4ade80;
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 2px;
+}
+
+.dim-sub {
+  font-size: 9px;
+  font-weight: 500;
+  color: #cbd5e1;
+}
+
+/* Move whole polygon handle */
+.polygon-move-handle {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.move-handle-badge {
+  background: rgba(15, 23, 42, 0.95);
+  border: 1.5px solid #38bdf8;
+  color: #38bdf8;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 4px 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(56, 189, 248, 0.3);
+  cursor: grab;
+  transform: translate(-50%, -140%);
+  user-select: none;
+  white-space: nowrap;
+  pointer-events: auto;
+  transition: all 0.15s ease;
+}
+
+.move-handle-badge:hover {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #ffffff;
+  transform: translate(-50%, -140%) scale(1.08);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.7);
+}
+
+.move-handle-badge:active {
+  cursor: grabbing !important;
+  transform: translate(-50%, -140%) scale(1.12);
+  background: #0369a1;
+}
+
+/* Midpoint add-vertex handle */
+.midpoint-marker-wrapper {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.midpoint-pin-target {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.midpoint-pin {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #0891b2;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
+  pointer-events: auto;
+}
+
+.midpoint-pin-target:hover .midpoint-pin {
+  transform: scale(1.35);
+  background: #06b6d4;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.9), 0 0 0 2px #ffffff;
+}
+
+/* Ruler (Penggaris / Pita Ukur) Leaflet Map Styling */
+.ruler-pin-wrapper {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.ruler-pin-target {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.ruler-pin-circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #f59e0b;
+  border: 2px solid #ffffff;
+  color: #0f172a;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.6), 0 0 0 1.5px rgba(245, 158, 11, 0.5);
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ruler-pin-target:hover .ruler-pin-circle {
+  transform: scale(1.25);
+  background: #fbbf24;
+  box-shadow: 0 0 14px rgba(251, 191, 36, 0.9), 0 0 0 2px #ffffff;
+}
+
+.ruler-segment-badge {
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(4px);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.ruler-bearing-text {
+  font-size: 9px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.ruler-snap-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px dashed #f59e0b;
+  background: rgba(245, 158, 11, 0.25);
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.8);
+  animation: ping 1.2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+
+/* Cartographic print layout styles */
+.print-polygon-label-badge {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(4px);
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 4px 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+  text-align: center;
+  pointer-events: none;
+}
+.print-label-main {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+.print-label-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 1px;
+}
+.print-patok-pill {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.6);
+}
+.print-seg-badge {
+  background: rgba(15, 23, 42, 0.9);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  padding: 1px 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  transform: translate(-50%, -50%);
+}
+
+/* Inset Map Center Beacon Pin */
+.inset-center-pin {
+  width: 22px;
+  height: 22px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.inset-pin-core {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #dc2626;
+  border: 2px solid #ffffff;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+  position: relative;
+  z-index: 2;
+}
+.inset-pin-pulse {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.4);
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  z-index: 1;
+}
+
+/* Print styling for official government cartographic map & measurement report */
+@media print {
+  @page {
+    size: landscape;
+    margin: 4mm;
+  }
+
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    overflow: visible !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+  }
+
+  /* Force color and background printing in Chrome, Safari, Edge, Firefox */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .no-print,
+  #root > div > aside,
+  #root > div > main,
+  .leaflet-control-container,
+  .leaflet-control {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  #root,
+  #root > div {
+    display: block !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100% !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  /* Reset the modal overlay from fixed dark backdrop to full-bleed white sheet */
+  .print-modal-backdrop {
+    position: static !important;
+    inset: auto !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+    z-index: auto !important;
+  }
+
+  .print-modal-inner {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    background: #ffffff !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  .print-document-wrapper {
+    width: 100% !important;
+    height: 100% !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
+  /* Make the print map document fill the paper sheet precisely */
+  .print-map-document {
+    position: relative !important;
+    width: 100% !important;
+    height: 96vh !important;
+    min-height: 190mm !important;
+    max-width: none !important;
+    max-height: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Ensure Leaflet tiles and markers stay visible during print */
+  .leaflet-container {
+    background: #ffffff !important;
+  }
+
+  .leaflet-tile {
+    visibility: inherit !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .print-polygon-label-badge {
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #000000 !important;
+    border: 1.5px solid #000000 !important;
+    box-shadow: none !important;
+  }
+
+  .print-label-main {
+    color: #000000 !important;
+  }
+
+  .print-label-sub {
+    color: #333333 !important;
+  }
+
+  .print-patok-pill {
+    border: 1.5px solid #000000 !important;
+    box-shadow: none !important;
+  }
+
+  .print-seg-badge {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #000000 !important;
+    box-shadow: none !important;
+  }
+}
+

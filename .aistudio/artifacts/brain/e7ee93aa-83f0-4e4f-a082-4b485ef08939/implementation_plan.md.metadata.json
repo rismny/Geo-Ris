@@ -1,0 +1,6 @@
+{
+  "summary":  "Rencana implementasi untuk:\n1. Peningkatan kejernihan citra satelit saat zoom in mendalam dengan tile upscaling cerdas hingga level 22 tanpa grey box/blur.\n2. Perbaikan kehalusan zoom (ultra-smooth zoom step 0.1x - 0.35x dan fluid wheel zoom).\n3. Interaksi geser kanvas peta pratinjau menggunakan klik kanan mouse dan klik kiri mouse.\n4. Integrasi Aplikasi Desktop PC (PWA 1-klik untuk Windows/Mac tanpa address bar) serta panduan pembungkusan file installer EXE mandiri.",
+  "updatedAt":  "2026-10-30T08:14:30.069150471Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}
